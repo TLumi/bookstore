@@ -1,9 +1,15 @@
 package fi.Lumilahti_palvelinohjelmointi.Bookstore.web;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import fi.Lumilahti_palvelinohjelmointi.Bookstore.domain.Book;
+import fi.Lumilahti_palvelinohjelmointi.Bookstore.domain.BookRepository;
 
 @Controller
 
@@ -11,21 +17,40 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class BookController {
 	
 	
-	@RequestMapping("/index")
-	public String vastaus(@RequestParam(value="title") String title,
-			@RequestParam(value="author") String author,
-			@RequestParam(value="year") int year,
-			@RequestParam(value="isbn") String isbn,
-			@RequestParam(value="price") double price, Model model) {
-				model.addAttribute("title", title);
-				model.addAttribute("author", author);
-				model.addAttribute("year", year);
-				model.addAttribute("isbn", isbn);
-				model.addAttribute("price", price);
-				
-		
-		return "";
-		}
-}	
+	@Autowired
+	private BookRepository repository; 
+	
+    @RequestMapping(value= {"/", "/booklist"})
+    public String bookList(Model model) {	
+        model.addAttribute("books", repository.findAll());
+        return "booklist";
+    }
+  
+    @RequestMapping(value = "/add")
+    public String addBook(Model model){
+    	model.addAttribute("book", new Book());
+        return "addBook";
+    }     
+    
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    public String save(Book book){
+        repository.save(book);
+        return "redirect:booklist";
+    }    
+    
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+    public String deleteBook(@PathVariable("id") Long bookId, Model model) {
+    	repository.deleteById(bookId);
+        return "redirect:../booklist";
+    }   
+    
+    @RequestMapping(value = "/edit/{id}")
+    public String addBook(@PathVariable("id") Long bookId, Model model){
+    model.addAttribute("book", repository.findById(bookId));
+    return "editbook";
+    }
+
+}
+
 
 
