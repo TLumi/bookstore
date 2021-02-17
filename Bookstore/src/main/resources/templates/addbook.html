@@ -1,31 +1,48 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
+<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" />
 <head>
     <title>Booklist</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-	<h1>Add book</h1>
-	<div>
+	<h1>Lisää uusi kirja</h1>
+	 
+
 		<form th:object="${book}" th:action="@{save}" action="#" method="post">
-		  	<label for="title">Title</label>
-			<input type="text" id="title" th:field="*{title}" />
-			<div style="clear: both; display: block; height: 10px;"></div>
-		  	<label for="author">Author</label>
-			<input type="text" id="author" th:field="*{author}" />
-			<div style="clear: both; display: block; height: 10px;"></div>
-		  	<label for="isbn">ISBN</label>
-			<input type="text" id="isbn" th:field="*{isbn}" />
-			<div style="clear: both; display: block; height: 10px;"></div>
-		  	<label for="year">Year</label>
-			<input type="text" id="year" th:field="*{year}" />
-			<div style="clear: both; display: block; height: 10px;"></div>
-		  	<label for="price">Price</label>
-			<input type="text" id="price" th:field="*{price}" />
-			<div style="clear: both; display: block; height: 10px;"></div>
-			<input type="submit" value="Save"></input>
-			
+		  	 <div class="row g-3 align-items-center">
+		  	  <div class="w-33 p-3 col-auto">
+		  	<label for="title" class="form-label">Kirja</label>
+			<input type="text" class="col-form-label" id="title" th:field="*{title}" />
+		
+			</div>
+		    <div class="col-auto">
+		  	<label for="author" class="form-label" >Kirjoittaja</label>
+			<input type="text" class="col-form-label" id="author" th:field="*{author}" />
+			</div>
+		   <div class="col-auto">
+		  	<label for="isbn" class="form-label" >ISBN</label>
+			<input type="text" class="col-form-label" id="isbn" th:field="*{isbn}" />
+			</div>
+			  <div class="col-auto">
+		  	<label for="year" class="form-label" >Vuosi</label>
+			<input type="text" id="year" class="col-form-label" th:field="*{year}" />
+			</div>
+			  <div class="col-auto">
+		  	<label for="price" class="form-label" >Hinta</label>
+			<input type="text" id="price" class="col-form-label" th:field="*{price}" />
+			</div>
+			 <div class="col-auto">
+			<label for = "categorylist">Osasto</label>
+						<select id= "categorylist" th:field="*{category}" class="col-form-label">
+				<option th:each= "category: ${categories}" th:value="${category.categoryId}" th:text="${category.name}"> </option>
+			</select>		
+			</div>
+			<div class= "col-auto" >
+			<input type="submit" class="btn btn-primary" value="Tallenna"></input>
+			</div>
+			</div>	
 		</form>
-	</div>
+
 </body>
 </html>

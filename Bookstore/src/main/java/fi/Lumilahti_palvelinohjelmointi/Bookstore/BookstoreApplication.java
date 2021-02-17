@@ -7,22 +7,35 @@ import org.springframework.context.annotation.Bean;
 
 import fi.Lumilahti_palvelinohjelmointi.Bookstore.domain.Book;
 import fi.Lumilahti_palvelinohjelmointi.Bookstore.domain.BookRepository;
+import fi.Lumilahti_palvelinohjelmointi.Bookstore.domain.Category;
+import fi.Lumilahti_palvelinohjelmointi.Bookstore.domain.CategoryRepository;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @SpringBootApplication
 public class BookstoreApplication {
-	
+	private static final Logger log = LoggerFactory.getLogger(BookstoreApplication.class);
+
 	public static void main(String[] args) {
 		SpringApplication.run(BookstoreApplication.class, args);
 	}
+	
 	@Bean
-	public CommandLineRunner bookDemo(BookRepository repository) {
+	public CommandLineRunner bookDemo(BookRepository brepository, CategoryRepository crepository) {
 		return (args) -> {
+			log.info("save categorys and books");
+			
+			crepository.save(new Category("Lapset"));
+			crepository.save(new Category("Ruoka"));
+			crepository.save(new Category("Harrastukset"));
+			
 			System.out.println("save books to db");
-			repository.save(new Book("J. Ahola", "Vaellus Suomessa", " 978-952-321-791-1", 2020, 27.95 ));
-			repository.save(new Book("M. Kunnas", "Majatalon väki ja kaappikellon kummitukset", " 978-951-1-14424-3", 2012, 19.90 ));
+			brepository.save(new Book("J. Ahola", "Vaellus Suomessa", " 978-952-321-791-1", 2020, 27.95, crepository.findByName("Harrastukset").get(0) ));
+			brepository.save(new Book("M. Kunnas", "Majatalon väki ja kaappikellon kummitukset", " 978-951-1-14424-3", 2012, 19.90, crepository.findByName("Lapset").get(0) ));
 			
 			System.out.println("fetch all book");
-			for (Book book : repository.findAll()) {
+			for (Book book : brepository.findAll()) {
 				System.out.println(book.toString());
 			}
 		};
