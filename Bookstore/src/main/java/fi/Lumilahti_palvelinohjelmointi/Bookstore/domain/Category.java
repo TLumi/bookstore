@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 
 @Entity
@@ -18,7 +20,7 @@ public class Category {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long categoryId;
 	private String name;
-
+	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL, mappedBy= "category")
 	private List<Book> books;
 	
