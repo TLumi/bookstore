@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">	
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" />
 <head>
     <title>Booklist</title>
@@ -7,7 +7,13 @@
 </head>
 
 <body>
+
 	<h1>Kirjat</h1>
+	
+		<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1> 
+		<form th:action="@{/logout}" method="post">
+			<input type="submit" value="Kirjaudu ulos" class="btn btn-danger"/> 
+		</form>
     <table class="table table-striped">
 		<tr>
 		    <th>Kirjan nimi</th>
@@ -16,7 +22,7 @@
 		    <th>Vuosi</th>
 		    <th>Hinta</th>
 		    <th>Osasto</th>
-		    <th></th>
+		    <th sec:authorize="hasAuthority('ADMIN')"></th>
 		    <th></th>
 		</tr>  
     	<tr th:each = "book : ${books}">
@@ -26,9 +32,9 @@
     		<td th:text="${book.year}"></td>
     		<td th:text="${book.price}"></td>
     		<td th:text="${book.category.name}"></td>
+    		<td sec:authorize= "hasAuthority('ADMIN')"><a th:href="@{/delete/{id}(id=${book.id})}" class="btn btn-danger" >Poista</a></td>
     		
- 				<td><a class="btn btn-danger" th:href="@{/delete/{id}(id=${book.id})}">Poista</a></td>
- 				<td><a class="btn btn-success" th:href="@{/edit/{id}(id=${book.id})}">Muuta tietoja</a></td>     		
+ 			<td><a class="btn btn-success" th:href="@{/edit/{id}(id=${book.id})}">Muuta tietoja</a></td>     		
     	</tr>
      </table>
 	 <a class="btn btn-success"  href="/add">Lisää kirja</a>    	
