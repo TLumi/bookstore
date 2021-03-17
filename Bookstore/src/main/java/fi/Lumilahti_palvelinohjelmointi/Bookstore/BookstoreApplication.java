@@ -37,9 +37,14 @@ public class BookstoreApplication {
 			brepository.save(new Book("J. Ahola", "Vaellus Suomessa", " 978-952-321-791-1", 2020, 27.95, crepository.findByName("Harrastukset").get(0) ));
 			brepository.save(new Book("M. Kunnas", "Majatalon väki ja kaappikellon kummitukset", " 978-951-1-14424-3", 2012, 19.90, crepository.findByName("Lapset").get(0) ));
 			
-			System.out.println("fetch all book");
+			System.out.println("fetch all books");
 			for (Book book : brepository.findAll()) {
 				System.out.println(book.toString());
+			}
+			
+			System.out.println("fetch all categories");
+			for (Category category : crepository.findAll()) {
+				System.out.println(category.getName());
 			}
 			
 			User user1 = new User("user","$2a$10$472N8IHlMHj4YL5pfWZ6PuAe0ASYuxgnhqh49kT8BVkAGbj5YdVpK", "user@user.fi", "USER");
